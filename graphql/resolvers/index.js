@@ -1,32 +1,24 @@
-const blocks = require('../../models/block')
+// Resolver 작성 : blocks라는 함수와 Block 타입 정보를 처리하기 위한 로직 작성
+//                쿼리에서 blocks를 요청하면, Block 객체의 find 메서드를 호출하여 MongoDB에 저장된 모든 collection을 반환한다.
+
+const Block = require('../../models/block')
 
 // 실제로 사용할 데이터 추가하기 (스키마에서 지정한 형식과 동일하게 작성되어야 한다!)
-// books 쿼리 입력시, books 데이터세트 불러오기
 const resolvers = {
-    // Query: {
-    //     books: () => [
-    //         {
-    //             title: '남과 여',
-    //             author: '시니/혀노'
-    //         },
-    //         {
-    //             title: '죽음에 관하여',
-    //             author: '시니/혀노'
-    //         }
-    //     ]
-    // }
     Query: {
-        async blockInfo(_, args) {
+        async blocks(_, args) {
             try {
-                const blockInfo = await blocks.find();
-                return blockInfo;
+                const blocks = await Block.find();
+                return blocks;
             } catch (err) {
                 console.log(err);
                 throw err;
             }
         }
     },
-    blocks: {
+    // _(언더바)는 요청하기 이전의 객체를 의미하며, _값은 undefined가 되고, _id, serviceCode, jsonrpc ... 함수의 _값은 요소 값을 요청하는 Block이 됨
+    // args는 쿼리의 인자인데 해당 예제에서는 전달하는 인자가 없다.
+    Block: {
         _id(_, args) {
             return _._id;
         },
